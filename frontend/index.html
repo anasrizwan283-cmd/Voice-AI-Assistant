@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice AI Assistant</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="background-glow glow-1"></div>
+    <div class="background-glow glow-2"></div>
+    <div class="background-grid"></div>
+    <div class="background-particles" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <div class="app-shell">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-top">
+                <div class="brand">
+                    <div class="brand-mark">✦</div>
+                    <div>
+                        <h2>Anas AI</h2>
+                        <p>Voice AI  Assistant</p>
+                    </div>
+                </div>
+                <button class="icon-btn compact" id="toggleSidebar" type="button" title="Toggle sidebar">☰</button>
+            </div>
+
+            <div class="sidebar-section">
+                <label class="search-box" for="searchChats">
+                    <span>⌕</span>
+                    <input id="searchChats" type="text" placeholder="Search chats..." autocomplete="off">
+                </label>
+            </div>
+
+            <button class="new-chat-btn" id="newChatBtn" type="button">＋ New Chat</button>
+            <button class="new-chat-btn secondary" id="newCallBtn" type="button">☎ New Voice Call</button>
+
+            <div class="history-list">
+                <div class="history-item active">Welcome Session</div>
+                <div class="history-item">Product Ideas</div>
+                <div class="history-item">Code Review</div>
+                <div class="history-item">Voice Notes</div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="profile-card">
+                    <div class="avatar">AI</div>
+                    <div>
+                        <strong>Guest User</strong>
+                        <p>Premium Mode</p>
+                    </div>
+                </div>
+                <button class="icon-btn compact" id="settingsBtn" type="button" title="Settings">⚙</button>
+            </div>
+
+            <div class="storage-pill">
+                <span class="storage-dot"></span>
+                <span>Cloud Sync • 92% ready</span>
+            </div>
+        </aside>
+
+        <main class="main-panel">
+            <header class="assistant-header">
+                <div class="header-title">
+                    <div class="status-dot"></div>
+                    <div>
+                        <p class="eyebrow">AI Companion</p>
+                        <h1>Voice AI Assistant</h1>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn compact mobile-toggle" id="mobileToggle" type="button" title="Toggle sidebar">☰</button>
+                    <div class="status-stack">
+                        <div class="chip">● Voice Ready</div>
+                        <div class="chip">⚡ 18ms</div>
+                        <div class="chip secure">🔒 Secure</div>
+                    </div>
+                </div>
+            </header>
+
+            <section class="hero-panel" id="heroPanel">
+                <div class="hero-card">
+                    <div class="hero-badge">Voice Calling • AI Mode</div>
+                    <h2>Premium Voice AI Experience</h2>
+                    <p>Seamlessly switch between chat and live conversation with a futuristic operating-system inspired assistant.</p>
+                    <div class="hero-actions">
+                        <button class="call-trigger" id="callTrigger" type="button">◉ Start Voice Call</button>
+                        <button class="pill-btn" id="openSettingsBtn" type="button">⚙ Settings</button>
+                    </div>
+                </div>
+
+                <div class="hero-card secondary" id="callPreviewPanel">
+                    <div class="call-preview">
+                        <div class="ringing-orb"></div>
+                        <div class="call-icon">☎</div>
+                        <div class="call-status" id="callStatus">Connecting</div>
+                        <div class="call-timer" id="callTimer">00:00</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="call-screen hidden" id="callScreen">
+                <div class="call-screen-card">
+                    <div class="call-screen-header">
+                        <div class="call-user">
+                            <div class="avatar large">AI</div>
+                            <div>
+                                <h3>Anas Voice AI</h3>
+                                <p id="callStateLabel">Listening</p>
+                            </div>
+                        </div>
+                        <div class="call-badge" id="callBadge">LIVE</div>
+                    </div>
+
+                    <div class="call-orb" aria-hidden="true">
+                        <div class="orb-core"></div>
+                    </div>
+
+                    <div class="waveform" id="waveform" aria-hidden="true">
+                        <span></span><span></span><span></span><span></span><span></span><span></span>
+                    </div>
+
+                    <div class="speaker-status" id="speakerStatus">
+                        <div class="state-pill active">🎤 Mic On</div>
+                        <div class="state-pill">🔊 Speaker On</div>
+                        <div class="state-pill">📶 Excellent</div>
+                    </div>
+
+                    <div class="call-transcript" id="callTranscript">
+                        <div class="transcript-line ai">AI: Ready for your request.</div>
+                        <div class="transcript-line user">You: I’m ready to talk.</div>
+                    </div>
+
+                    <div class="call-controls">
+                        <button class="control-btn" id="muteBtn" type="button">🔇 Mute</button>
+                        <button class="control-btn accent" id="endCallBtn" type="button">⏻ End</button>
+                        <button class="control-btn" id="speakerBtn" type="button">🔊 Speaker</button>
+                    </div>
+                </div>
+            </section>
+
+            <div class="chat-window" id="chatMessages">
+                <div class="message ai">
+                    <div class="bubble">
+                        <div class="message-meta">Nova • just now</div>
+                        <div class="message-content">Hello! I’m your premium Voice AI Assistant. Ask me anything or start a live call.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="typing-indicator hidden" id="typingIndicator">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <form class="input-bar" id="chatForm">
+                <button class="icon-btn" id="attachBtn" type="button" title="Attach file">📎</button>
+                <div class="input-shell">
+                    <input id="messageInput" type="text" placeholder="Ask anything..." autocomplete="off">
+                    <button class="icon-btn" id="micBtn" type="button" title="Use voice input">🎤</button>
+                </div>
+                <button class="send-btn" id="sendBtn" type="submit">➜</button>
+            </form>
+        </main>
+    </div>
+
+    <div class="settings-modal hidden" id="settingsModal" aria-hidden="true">
+        <div class="modal-backdrop" id="settingsBackdrop"></div>
+        <div class="settings-card">
+            <div class="settings-header">
+                <div>
+                    <h3>Assistant Settings</h3>
+                    <p>Fine-tune the experience</p>
+                </div>
+                <button class="icon-btn compact" id="closeSettingsBtn" type="button" title="Close settings">✕</button>
+            </div>
+            <div class="settings-grid">
+                <label class="setting-row">
+                    <span>Theme</span>
+                    <select id="themeSelect">
+                        <option value="dark">Dark</option>
+                        <option value="light">Light</option>
+                    </select>
+                </label>
+                <label class="setting-row">
+                    <span>Accent</span>
+                    <select id="accentSelect">
+                        <option value="blue">Blue</option>
+                        <option value="violet">Violet</option>
+                        <option value="cyan">Cyan</option>
+                    </select>
+                </label>
+                <label class="setting-row">
+                    <span>Voice</span>
+                    <select id="voiceSelect">
+                        <option value="nova">Nova</option>
+                        <option value="aria">Aria</option>
+                        <option value="atlas">Atlas</option>
+                    </select>
+                </label>
+                <label class="setting-row">
+                    <span>Language</span>
+                    <select id="languageSelect">
+                        <option value="en">English</option>
+                        <option value="fr">Français</option>
+                        <option value="de">Deutsch</option>
+                    </select>
+                </label>
+                <label class="setting-row toggle-row">
+                    <span>Animations</span>
+                    <input id="animationToggle" type="checkbox" checked>
+                </label>
+                <label class="setting-row toggle-row">
+                    <span>Sound</span>
+                    <input id="soundToggle" type="checkbox" checked>
+                </label>
+            </div>
+            <div class="settings-footer">
+                <div class="model-pill">Gemini · Live Model</div>
+                <div class="about-pill">Built for premium voice AI</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
