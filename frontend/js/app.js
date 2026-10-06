@@ -34,7 +34,7 @@ const speakerBtn = document.getElementById("speakerBtn");
 const waveform = document.getElementById("waveform");
 const callBadge = document.getElementById("callBadge");
 
-const API_URL = "http://127.0.0.1:8000/chat";
+const API_URL = "http://127.0.0.1:8001/chat";
 
 let isMuted = false;
 let isSpeakerOn = true;
@@ -44,6 +44,7 @@ let callSeconds = 0;
 let animationsEnabled = true;
 let recognition = null;
 let isListening = false;
+let speechRecognitionPermissionDenied = false;
 let speechUtterance = null;
 
 function escapeHtml(value) {
@@ -304,9 +305,9 @@ function speakText(text) {
         setCallUIState(callActive ? "Listening" : "Ready");
 
         // Auto listen again after AI finishes speaking
-        if (callActive) {
+        if (callActive && !speechRecognitionPermissionDenied) {
             setTimeout(() => {
-                if (!isListening) {
+                if (!isListening && !speechRecognitionPermissionDenied) {
                     startVoiceRecognition();
                 }
             }, 500);
@@ -316,9 +317,9 @@ function speakText(text) {
     speechUtterance.onerror = () => {
         setCallUIState(callActive ? "Listening" : "Ready");
 
-        if (callActive) {
+        if (callActive && !speechRecognitionPermissionDenied) {
             setTimeout(() => {
-                if (!isListening) {
+                if (!isListening && !speechRecognitionPermissionDenied) {
                     startVoiceRecognition();
                 }
             }, 500);
@@ -344,6 +345,10 @@ function startVoiceRecognition() {
 
     if (!SpeechRecognition) {
         addMessage("Voice input is not supported in this browser.", "ai", true);
+        return;
+    }
+
+    if (speechRecognitionPermissionDenied) {
         return;
     }
 
@@ -410,10 +415,17 @@ function startVoiceRecognition() {
     };
 
     recognition.onerror = (event) => {
-
-        console.log(event.error);
-
+        console.error("Speech recognition error:", event.error);
         stopVoiceRecognition();
+
+        if (event.error === "not-allowed" || event.error === "service-not-allowed") {
+            speechRecognitionPermissionDenied = true;
+            addMessage(
+                "Microphone access is blocked. Allow microphone access for this site in your browser settings, then try again.",
+                "ai",
+                true
+            );
+        }
 
     };
 
@@ -422,11 +434,11 @@ function startVoiceRecognition() {
         stopVoiceRecognition();
 
         // Auto restart while call is active
-        if (callActive) {
+        if (callActive && !speechRecognitionPermissionDenied) {
 
             setTimeout(() => {
 
-                if (!isListening) {
+                if (!isListening && !speechRecognitionPermissionDenied) {
 
                     startVoiceRecognition();
 
@@ -556,6 +568,7 @@ sendBtn.addEventListener("click", () => {
 });
 
 micBtn.addEventListener("click", () => {
+    speechRecognitionPermissionDenied = false;
     startVoiceRecognition();
 });
 
