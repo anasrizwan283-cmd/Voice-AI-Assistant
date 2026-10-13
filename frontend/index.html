@@ -24,7 +24,7 @@
                         <p>Voice AI  Assistant</p>
                     </div>
                 </div>
-                <button class="icon-btn compact" id="toggleSidebar" type="button" title="Toggle sidebar">☰</button>
+                <button class="icon-btn compact" id="toggleSidebar" type="button" title="Toggle sidebar" aria-label="Toggle sidebar">☰</button>
             </div>
 
             <div class="sidebar-section">
@@ -37,12 +37,7 @@
             <button class="new-chat-btn" id="newChatBtn" type="button">＋ New Chat</button>
             <button class="new-chat-btn secondary" id="newCallBtn" type="button">☎ New Voice Call</button>
 
-            <div class="history-list">
-                <div class="history-item active">Welcome Session</div>
-                <div class="history-item">Product Ideas</div>
-                <div class="history-item">Code Review</div>
-                <div class="history-item">Voice Notes</div>
-            </div>
+            <div class="history-list" id="historyList" aria-label="Chat history"></div>
 
             <div class="sidebar-footer">
                 <div class="profile-card">
@@ -57,7 +52,7 @@
 
             <div class="storage-pill">
                 <span class="storage-dot"></span>
-                <span>Cloud Sync • 92% ready</span>
+                <span>Local Storage • On device</span>
             </div>
         </aside>
 
@@ -71,7 +66,7 @@
                     </div>
                 </div>
                 <div class="header-actions">
-                    <button class="icon-btn compact mobile-toggle" id="mobileToggle" type="button" title="Toggle sidebar">☰</button>
+                    <button class="icon-btn compact mobile-toggle" id="mobileToggle" type="button" title="Toggle sidebar" aria-label="Toggle sidebar">☰</button>
                     <div class="status-stack">
                         <div class="chip">● Voice Ready</div>
                         <div class="chip">⚡ 18ms</div>
@@ -123,14 +118,13 @@
                     </div>
 
                     <div class="speaker-status" id="speakerStatus">
-                        <div class="state-pill active">🎤 Mic On</div>
-                        <div class="state-pill">🔊 Speaker On</div>
+                        <div class="state-pill active" id="micStatePill">🎤 Mic On</div>
+                        <div class="state-pill active" id="speakerStatePill">🔊 Speaker On</div>
                         <div class="state-pill">📶 Excellent</div>
                     </div>
 
-                    <div class="call-transcript" id="callTranscript">
-                        <div class="transcript-line ai">AI: Ready for your request.</div>
-                        <div class="transcript-line user">You: I’m ready to talk.</div>
+                    <div class="call-transcript" id="callTranscript" aria-live="polite">
+                        <div class="transcript-line ai">Your live conversation will appear here.</div>
                     </div>
 
                     <div class="call-controls">
@@ -156,8 +150,10 @@
                 <span></span>
             </div>
 
+            <div class="attachment-status hidden" id="attachmentStatus" role="status" aria-live="polite"></div>
             <form class="input-bar" id="chatForm">
                 <button class="icon-btn" id="attachBtn" type="button" title="Attach file">📎</button>
+                <input id="fileInput" type="file" accept=".txt,.md,.csv,.json,.xml,.html,.css,.js,.ts,.py,.yaml,.yml,.log,.sql" multiple hidden>
                 <div class="input-shell">
                     <input id="messageInput" type="text" placeholder="Ask anything..." autocomplete="off">
                     <button class="icon-btn" id="micBtn" type="button" title="Use voice input">🎤</button>
@@ -169,10 +165,10 @@
 
     <div class="settings-modal hidden" id="settingsModal" aria-hidden="true">
         <div class="modal-backdrop" id="settingsBackdrop"></div>
-        <div class="settings-card">
+        <div class="settings-card" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
             <div class="settings-header">
                 <div>
-                    <h3>Assistant Settings</h3>
+                    <h3 id="settingsTitle">Assistant Settings</h3>
                     <p>Fine-tune the experience</p>
                 </div>
                 <button class="icon-btn compact" id="closeSettingsBtn" type="button" title="Close settings">✕</button>
@@ -205,6 +201,7 @@
                     <span>Language</span>
                     <select id="languageSelect">
                         <option value="en">English</option>
+                        <option value="ur">Urdu</option>
                         <option value="fr">Français</option>
                         <option value="de">Deutsch</option>
                     </select>
@@ -219,8 +216,8 @@
                 </label>
             </div>
             <div class="settings-footer">
-                <div class="model-pill">Gemini · Live Model</div>
-                <div class="about-pill">Built for premium voice AI</div>
+                <div class="model-pill">Ollama · Local Model</div>
+                <div class="about-pill">Voice runs in your browser</div>
             </div>
         </div>
     </div>
